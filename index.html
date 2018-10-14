@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Vue TEST</title>
+<!-- Vue.js を読み込む -->
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/vue"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/foundation/6.3.1/css/foundation.min.css">
+</head>
+<body>
+
+  <!--<div id="app-1">{{ message }}</div>-->
+
+<div>
+  <ul id="app-2">
+    <li v-for="item in results">
+      <span>{{ item.url }}</span>
+      <span>{{ item.text }}</span>
+    </li>
+  </ul>
+</div>
+
+<script>
+// const app1 = new Vue({
+//   el: '#app-1',                        /* #app-1 要素に対して Vue を適用する */
+//   data: { message: 'Good! Hello world!' }    /* message という名前のデータを定義する */
+// });
+const vm = new Vue({
+  el: '#app-2',
+  data: {
+    results: []
+  },
+  mounted() {
+    axios.get("/index.js").then(response => {this.results = response.data.results})
+  }
+});
+setInterval(function() {
+        axios.get('/index.js').then((response) => {
+            vm.$data.results = response.data.results;
+        }).catch( error => { console.log(error); });
+    }, 2000);
+</script>
+
+</body>
+</html>
